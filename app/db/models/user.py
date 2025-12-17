@@ -1,7 +1,8 @@
 from app.db import db
 from datetime import datetime, timezone
+from flask_login import UserMixin
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -22,6 +23,14 @@ class User(db.Model):
     updated_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
 
     updated_by = db.relationship('User', backref='updated_users', remote_side=[id])
+
+    @property
+    def is_active(self):
+        return self.active # UserMixin override for flask-login
+
+    def remove_sensitive_data(self):
+        self.password = None
+        return self
 
     def __repr__(self):
         return f"<User {self.username}>"
