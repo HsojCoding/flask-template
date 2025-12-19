@@ -20,7 +20,7 @@ class User(db.Model, UserMixin):
         nullable=False
     )
 
-    updated_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    updated_by_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
 
     updated_by = db.relationship('User', backref='updated_users', remote_side=[id])
 
