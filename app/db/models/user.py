@@ -11,7 +11,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(120), nullable=False)
 
     is_admin = db.Column(db.Boolean, default=False)
-    active = db.Column(db.Boolean, default=True)
+    active = db.Column(db.Boolean, default=True) # Is just a reverse deleted flag
 
     updated_datetime = db.Column(
         db.DateTime,
