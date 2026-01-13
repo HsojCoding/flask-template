@@ -227,5 +227,5 @@ def reactivate_user(user_id):
 @login_required
 @admin_required
 def user_list():
-    users_list = User.query.options(joinedload(User.updated_by)).order_by(User.updated_datetime.desc()).all()
+    users_list = User.query.options(joinedload(User.updated_by)).order_by(User.username.asc()).all()
     return render_template('auth/user_list.html', users_list=users_list)
