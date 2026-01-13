@@ -4,6 +4,7 @@
 <body>
     {% if current_user.is_authenticated and current_user.is_admin %}
     <h1>Create User</h1>
+    <a href="{{ url_for('auth.user_list') }}">Back to User List</a>
     <form method="POST" action="{{ url_for('auth.create_user') }}">
         <label for="username">Username</label>
         <input type="text" name="username" id="username" required>
