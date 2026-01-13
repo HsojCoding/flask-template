@@ -1,11 +1,11 @@
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_bcrypt import Bcrypt
 from app.db.models import User
 from functools import wraps
-from flask import current_user, flash, redirect, url_for
+from flask import flash, redirect, url_for
 
 login_manager = LoginManager()
-login_manager.login_view = 'auth_bp.login'
+login_manager.login_view = 'auth.login'
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -34,10 +34,10 @@ def admin_required(f):
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
             flash('You must be logged in to access this page', 'error')
-            return redirect(url_for('auth_bp.login'))
+            return redirect(url_for('auth.login'))
         
         if not current_user.is_admin:
             flash('You are not authorized to access this page', 'error')
-            return redirect(url_for('main_bp.index'))
+            return redirect(url_for('main.index'))
         return f(*args, **kwargs)
     return decorated_function

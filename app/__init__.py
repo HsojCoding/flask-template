@@ -1,4 +1,5 @@
 from flask import Flask
+
 from app.views import main_bp, auth_bp
 from app.auth import login_manager, bcrypt
 from app.db import db, migrate
