@@ -1,0 +1,33 @@
+{% extends "main/base.html" %}
+{% block title %}Edit User{% endblock %}
+{% block content %}
+<h1>Edit User</h1>
+<a href="{{ url_for('auth.user_list') }}">Back to User List</a>
+<form method="POST" action="{{ url_for('auth.edit_user', user_id=user.id) }}">
+    <label for="username">Username</label>
+    <input type="text" name="username" id="username" value="{{ user.username }}">
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" value="{{ user.email }}">
+    <label for="password">Password - leave blank to keep current password</label>
+    <input type="password" name="password" id="password">
+    <label for="is_admin">Admin</label>
+    <input type="checkbox" name="is_admin" id="is_admin" value="{{ user.is_admin }}" {% if user.is_admin %}checked{% endif %}>
+    <button type="submit">Save</button>
+</form>
+{% if user.active %}
+<p>User is active</p>
+<a href="{{ url_for('auth.delete_user', user_id=user.id) }}">Deactivate User</a>
+{% else %}
+<p>User is deactivated</p>
+<a href="{{ url_for('auth.reactivate_user', user_id=user.id) }}">Reactivate User</a>
+{% endif %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<ul class="flashes">
+{% for category, message in messages %}
+<li class="{{ category }}">{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+{% endblock %}
