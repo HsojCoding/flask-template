@@ -9,17 +9,14 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(50), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
-
     is_admin = db.Column(db.Boolean, default=False)
     active = db.Column(db.Boolean, default=True) # Is just a reverse deleted flag
-
     updated_datetime = db.Column(
         db.DateTime,
         default=datetime.now(timezone.utc),
         onupdate=datetime.now(timezone.utc),
         nullable=False
     )
-
     updated_by_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
 
     updated_by = db.relationship('User', backref='updated_users', remote_side=[id])
@@ -34,3 +31,28 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f"<User {self.username}>"
+
+"""
+class UserHistory(db.Model):
+    __tablename__ = 'user_history'
+
+    id = db.Column(db.Integer, primary_key=True)
+    version = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    username = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
+    active = db.Column(db.Boolean, default=True)
+    updated_datetime = db.Column(
+        db.DateTime,
+        default=datetime.now(timezone.utc),
+        onupdate=datetime.now(timezone.utc),
+        nullable=False
+    )
+    updated_by_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+
+    updated_by = db.relationship('User', backref='updated_user_histories', remote_side=[id])
+
+    def __repr__(self):
+        return f"<UserHistory {self.user_id} version {self.version}>"
+"""
